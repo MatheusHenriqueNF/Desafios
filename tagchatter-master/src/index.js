@@ -11,7 +11,24 @@
 
   function listMessages() {
     // Faz um request para a API de listagem de mensagens
-    // Atualiza a o conteúdo da lista de mensagens
+    fetch(apiUrl + "/messages") // Faz um request para a API de listagem de mensagens
+      .then(function(response){//Recebe a resposta da API
+        return response.json(); // Converte a resposta para JSON
+      })
+      
+      // Atualiza a o conteúdo da lista de mensagens
+      .then(function(messagem){//Recebe a resposta convertida
+        const messagemList = document.getElementById("messages-list");//Pega a lista de mensagens
+        messagemList.innerHTML = "";//Limpa a lista de mensagens
+
+        messagem.forEach(function(messagem){
+          const messagemItem = document.createElement("li");//Cria um item de lista
+          messagemItem.innerHTML = messagem.text;//Adiciona o texto da mensagem no item de lista
+          messagemList.appendChild(messagemItem);//Adiciona o item de lista na lista de mensagens
+        });
+      });
+
+    
     // Deve ser chamado a cada 3 segundos
   }
 
@@ -24,6 +41,7 @@
     // Manda a mensagem para a API quando o usuário envia a mensagem
     // Caso o request falhe exibe uma mensagem para o usuário utilizando Window.alert ou outro componente visual
     // Se o request for bem sucedido, atualiza o conteúdo da lista de mensagens
+    
   }
 
   function getMe() {
@@ -33,6 +51,8 @@
 
   function initialize() {
     fetchParrotsCount();
+    listMessages();
+    setInterval(listMessages, 3000); // Atualiza a lista de mensagens a cada 3 segundos
   }
 
   initialize();
